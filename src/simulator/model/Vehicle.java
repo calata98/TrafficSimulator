@@ -12,7 +12,7 @@ public class Vehicle extends SimulatedObject {
 	private int maxSpeed;
 	protected int speed;
 	private VehicleStatus estado;
-	private Road road;
+	protected Road road;
 	protected int location;
 	private int prevLocation;
 	protected int contClass;
@@ -20,7 +20,7 @@ public class Vehicle extends SimulatedObject {
 	private int distanciaR;
 	private List<Junction> readItinerary;
 
-	protected Vehicle(String id, int maxSpeed, int contClass,
+	Vehicle(String id, int maxSpeed, int contClass,
 			List<Junction> itinerary) {
 			super(id);
 			
@@ -42,7 +42,7 @@ public class Vehicle extends SimulatedObject {
 			}
 	}
 	
-	protected void setSpeed(int s) {
+	void setSpeed(int s) {
 		if(s < 0) {
 			//Excepcion
 		}else {
@@ -54,7 +54,7 @@ public class Vehicle extends SimulatedObject {
 		}
 	}
 	
-	protected void setContaminationClass(int c) {
+	void setContaminationClass(int c) {
 		if(c < 0 || c > 10) {
 			//Excepcion
 		}else {
@@ -65,7 +65,7 @@ public class Vehicle extends SimulatedObject {
 	
 	
 	@Override
-	protected void advance(int time) {
+	void advance(int time) {
 		
 		if(estado.equals(VehicleStatus.TRAVELING)) {
 
@@ -87,7 +87,7 @@ public class Vehicle extends SimulatedObject {
 
 	}
 	
-	protected void moveToNextRoad() {
+	void moveToNextRoad() {
 		
 		if(!estado.equals(VehicleStatus.WAITING) && !estado.equals(VehicleStatus.PENDING)) {
 			//Excepcion
@@ -99,8 +99,19 @@ public class Vehicle extends SimulatedObject {
 
 	@Override
 	public JSONObject report() {
-		// TODO Auto-generated method stub
-		return null;
+
+		JSONObject aux = new JSONObject();
+		
+		aux.append("id", _id);
+		aux.append("speed", speed);
+		aux.append("distance", distanciaR);
+		aux.append("co2", contTotal);
+		aux.append("class", contClass);
+		aux.append("status", estado);
+		aux.append("road", road._id);
+		aux.append("location", location);
+		
+		return aux;
 	}
 
 }

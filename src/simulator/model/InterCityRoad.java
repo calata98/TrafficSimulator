@@ -10,7 +10,7 @@ public class InterCityRoad extends Road {
 	
 
 	@Override
-	protected void reduceTotalContamination() {
+	void reduceTotalContamination() {
 		int x = 0;
 		
 		switch(weather) {
@@ -31,7 +31,7 @@ public class InterCityRoad extends Road {
 	}
 
 	@Override
-	protected void updateSpeedLimit() {
+	void updateSpeedLimit() {
 
 		if(maxSpeed > contLimit) {
 			speedLimit = (int)(maxSpeed*0.5);

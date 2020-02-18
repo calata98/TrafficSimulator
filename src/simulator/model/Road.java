@@ -7,18 +7,19 @@ import org.json.JSONObject;
 public abstract class Road extends SimulatedObject {
 
 	
-	private Junction srcJunc, destJunc;
+	protected Junction srcJunc, destJunc;
 	protected int length;
 	protected int maxSpeed;
 	protected int speedLimit;
 	protected int contLimit;
 	protected Weather weather;
 	protected int contTotal;
-	private List<Vehicle> vehicles;
+	protected List<Vehicle> vehicles;
+	private List<String> vehiclesID;
 	
 	
 	
-	protected Road(String id, Junction srcJunc, Junction destJunc, int maxSpeed,
+	Road(String id, Junction srcJunc, Junction destJunc, int maxSpeed,
 			int contLimit, int length, Weather weather) {
 			super(id);
 			//La constructora debe añadir la carretera como carretera saliente a su cruce origen, y como carretera entrante a su cruce destino.
@@ -62,20 +63,22 @@ public abstract class Road extends SimulatedObject {
 			
 	}
 	
-	protected void enter(Vehicle v) {
+	void enter(Vehicle v) {
 		
 		if(v.location != 0 || v.speed != 0) {
 			//Excepcion
 		}else {
 			vehicles.add(v);
+			vehiclesID.add(v._id);
 		}
 	}
 	
-	protected void exit(Vehicle v) {
+	void exit(Vehicle v) {
 		vehicles.remove(v);
+		vehiclesID.remove(v._id);
 	}
 	
-	protected void setWeather(Weather w) {
+	void setWeather(Weather w) {
 		if(w == null) {
 			//Excepcion
 		}else {
@@ -83,7 +86,7 @@ public abstract class Road extends SimulatedObject {
 		}
 	}
 	
-	protected void addContamination(int c) {
+	void addContamination(int c) {
 		if(c < 0) {
 			//Excepcion
 		}else {
@@ -113,8 +116,17 @@ public abstract class Road extends SimulatedObject {
 
 	@Override
 	public JSONObject report() {
-		// TODO Auto-generated method stub
-		return null;
+
+		JSONObject aux = new JSONObject();
+		
+		aux.append("id", _id);
+		aux.append("speedlimit", speedLimit);
+		aux.append("weather", weather);
+		aux.append("co2", contTotal);
+		aux.append("vehicles", vehiclesID);
+		
+		
+		return aux;
 	}
 
 }
