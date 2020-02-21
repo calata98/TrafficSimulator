@@ -2,6 +2,7 @@ package simulator.model;
 
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public abstract class Road extends SimulatedObject {
@@ -15,7 +16,6 @@ public abstract class Road extends SimulatedObject {
 	protected Weather weather;
 	protected int contTotal;
 	protected List<Vehicle> vehicles;
-	private List<String> vehiclesID;
 	
 	
 	
@@ -69,13 +69,11 @@ public abstract class Road extends SimulatedObject {
 			//Excepcion
 		}else {
 			vehicles.add(v);
-			vehiclesID.add(v._id);
 		}
 	}
 	
 	void exit(Vehicle v) {
 		vehicles.remove(v);
-		vehiclesID.remove(v._id);
 	}
 	
 	void setWeather(Weather w) {
@@ -119,11 +117,15 @@ public abstract class Road extends SimulatedObject {
 
 		JSONObject aux = new JSONObject();
 		
-		aux.append("id", _id);
-		aux.append("speedlimit", speedLimit);
-		aux.append("weather", weather);
-		aux.append("co2", contTotal);
-		aux.append("vehicles", vehiclesID);
+		aux.put("id", _id);
+		aux.put("speedlimit", speedLimit);
+		aux.put("weather", weather);
+		aux.put("co2", contTotal);
+		JSONArray carIds = new JSONArray();
+		for(int i = 0; i < vehicles.size(); i++) {
+			carIds.put(vehicles.get(i).getId());
+		}
+		aux.put("vehicles", carIds);
 		
 		
 		return aux;

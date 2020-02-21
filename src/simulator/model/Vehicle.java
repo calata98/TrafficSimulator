@@ -18,7 +18,7 @@ public class Vehicle extends SimulatedObject {
 	protected int contClass;
 	private int contTotal;
 	private int distanciaR;
-	private List<Junction> readItinerary;
+	protected List<Junction> readItinerary;
 
 	Vehicle(String id, int maxSpeed, int contClass,
 			List<Junction> itinerary) {
@@ -102,14 +102,14 @@ public class Vehicle extends SimulatedObject {
 
 		JSONObject aux = new JSONObject();
 		
-		aux.append("id", _id);
-		aux.append("speed", speed);
-		aux.append("distance", distanciaR);
-		aux.append("co2", contTotal);
-		aux.append("class", contClass);
-		aux.append("status", estado);
-		aux.append("road", road._id);
-		aux.append("location", location);
+		aux.put("id", _id);
+		aux.put("speed", speed);
+		aux.put("distance", distanciaR);
+		aux.put("co2", contTotal);
+		aux.put("class", contClass);
+		aux.put("status", estado);
+		aux.put("road", road._id);
+		aux.put("location", location);
 		
 		return aux;
 	}

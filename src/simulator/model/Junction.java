@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Junction extends SimulatedObject {
@@ -13,11 +14,11 @@ public class Junction extends SimulatedObject {
 	protected Map<Junction,Road> exitRoads;
 	protected List<List<Vehicle>> queueList;
 	protected int currGreen;
-	protected int lightSwitch;
+	protected int lastSwitchingTime;
 	protected LightSwitchingStrategy lsStrategy;
 	protected DequeuingStrategy dqStrategy;
 	protected int xCoor, yCoor;
-	protected Map<Road,List<Vehicle>> mapeo;
+	//protected Map<Road,List<Vehicle>> roadsQueue;
 	
 	
 	Junction(String id, LightSwitchingStrategy lsStrategy, DequeuingStrategy
@@ -93,15 +94,42 @@ public class Junction extends SimulatedObject {
 		List<Vehicle> exitVehicles = dqStrategy.dequeue(enterRoads.get(currGreen).vehicles);
 		
 		for(int i = 0; i < exitVehicles.size(); i++) {
-			
 			exitVehicles.get(i).advance(time);
+			exitVehicles.get(i).moveToNextRoad();
+			enterRoads.get(currGreen).exit(exitVehicles.get(i));
+		}
+		
+		int nextGreen = lsStrategy.chooseNextGreen(enterRoads, queueList, currGreen, lastSwitchingTime, time);
+		
+		if(nextGreen != currGreen) {
+			currGreen = nextGreen;
 		}
 		
 	}
 
 	@Override
 	public JSONObject report() {
-		// TODO Auto-generated method stub
+		JSONObject aux = new JSONObject();
+		aux.put("id", _id);
+		if(currGreen == -1) {
+			aux.put("green", "none");
+		}else {
+			aux.put("green", currGreen);
+		}
+		
+		JSONArray enterRoadsQueue = new JSONArray();
+		for(int i = 0; i < enterRoads.size(); i++) {
+			JSONObject queue = new JSONObject();
+			JSONArray vehicles = new JSONArray();
+			for(int j = 0; j < enterRoads.get(i).vehicles.size(); j++) {
+				vehicles.put(enterRoads.get(i).vehicles.get(j)._id);
+			}
+			queue.put("road", enterRoads.get(i)._id);
+			queue.put("vehicles", vehicles);
+			enterRoadsQueue.put(queue);
+		}
+		
+		
 		return null;
 	}
 
