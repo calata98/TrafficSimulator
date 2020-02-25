@@ -129,8 +129,10 @@ public class Junction extends SimulatedObject {
 			enterRoadsQueue.put(queue);
 		}
 		
+		aux.put("queues", enterRoadsQueue);
 		
-		return null;
+		
+		return aux;
 	}
 
 }
