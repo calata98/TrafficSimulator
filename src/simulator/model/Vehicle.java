@@ -92,12 +92,11 @@ public class Vehicle extends SimulatedObject {
 		if(!estado.equals(VehicleStatus.WAITING) && !estado.equals(VehicleStatus.PENDING)) {
 			//Excepcion
 		}else {
-			
-			road.exit(this);
 			if(estado.equals(VehicleStatus.PENDING)) {
 				road = readItinerary.get(0).roadTo(readItinerary.get(1));
 				estado = VehicleStatus.WAITING;
 			}else {
+				road.exit(this);
 				if(readItinerary.indexOf(road.destJunc) >= readItinerary.size()){
 					estado = VehicleStatus.ARRIVED;
 				}else {
