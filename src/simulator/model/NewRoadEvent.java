@@ -1,6 +1,6 @@
 package simulator.model;
 
-public abstract class NewRoadEvent extends Event {
+public class NewRoadEvent extends Event {
 	
 	
 	
@@ -23,6 +23,13 @@ public abstract class NewRoadEvent extends Event {
 		this.length = length;
 		this.maxSpeed = maxSpeed;
 		this.weather = weather;
+	}
+
+
+	@Override
+	void execute(RoadMap map) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

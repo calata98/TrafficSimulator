@@ -22,7 +22,6 @@ public abstract class Road extends SimulatedObject {
 	Road(String id, Junction srcJunc, Junction destJunc, int maxSpeed,
 			int contLimit, int length, Weather weather) {
 			super(id);
-			//La constructora debe añadir la carretera como carretera saliente a su cruce origen, y como carretera entrante a su cruce destino.
 			
 			if(maxSpeed <= 0) {
 				//Excepcion
@@ -53,12 +52,14 @@ public abstract class Road extends SimulatedObject {
 				//Excepcion
 			}else {
 				this.srcJunc = srcJunc;
+				this.srcJunc.addOutGoingRoad(this);
 			}
 			
 			if(destJunc == null) {
 				//Excepcion
 			}else {
 				this.destJunc = destJunc;
+				this.destJunc.addIncommingRoad(this);
 			}
 			
 	}

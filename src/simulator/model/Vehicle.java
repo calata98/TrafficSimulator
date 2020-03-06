@@ -81,6 +81,7 @@ public class Vehicle extends SimulatedObject {
 			
 			if(location == road.length) {
 				estado = VehicleStatus.WAITING;
+				speed = 0;
 			}
 		}
 		
