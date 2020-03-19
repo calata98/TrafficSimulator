@@ -9,8 +9,8 @@ public class MostCrowdedStrategyBuilder extends Builder<LightSwitchingStrategy> 
 
 	private final int defaultTimeslot = 1;
 	
-	MostCrowdedStrategyBuilder(String type) {
-		super(type);
+	public MostCrowdedStrategyBuilder() {
+		super("most_crowded_lss");
 	}
 
 	@Override

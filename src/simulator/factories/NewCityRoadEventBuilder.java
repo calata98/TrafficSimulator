@@ -9,9 +9,8 @@ import simulator.model.Weather;
 
 public class NewCityRoadEventBuilder extends Builder<Event> {
 
-	NewCityRoadEventBuilder(String type) {
-		super(type);
-		// TODO Auto-generated constructor stub
+	public NewCityRoadEventBuilder() {
+		super("new_city_road");
 	}
 
 	
@@ -21,7 +20,7 @@ public class NewCityRoadEventBuilder extends Builder<Event> {
 		
 		
 		if(data.has("time") && data.has("id") && data.has("src") && data.has("dest") && data.has("length") && data.has("co2limit") && data.has("maxspeed") && data.has("weather")) {
-			aux = new NewCityRoad(data.getInt("time"),data.getString("id"), data.getString("src"), data.getString("dest"),data.getInt("length"),data.getInt("co2limit"),data.getInt("maxspeed"), (Weather)data.get("weather"));
+			aux = new NewCityRoad(data.getInt("time"),data.getString("id"), data.getString("src"), data.getString("dest"),data.getInt("length"),data.getInt("co2limit"),data.getInt("maxspeed"), (Weather) Weather.valueOf((String) data.get("weather")));
 		}else {
 			aux =  null;
 		}

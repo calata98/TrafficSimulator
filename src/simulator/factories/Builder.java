@@ -18,8 +18,14 @@ public abstract class Builder<T> {
 
 		if (_type != null && _type.equals(info.getString("type"))) {
 			b = createTheInstance(info.has("data") ? info.getJSONObject("data") : null);
+			
+			
+			/*if(info.getJSONObject("data").has("id")) {
+				System.out.println(info.getString("type") + " " + info.getJSONObject("data").getString("id"));
+			}*/
+			
 		}
-
+		
 		return b;
 	}
 

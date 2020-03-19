@@ -1,6 +1,12 @@
 package simulator.launcher;
 
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -9,8 +15,24 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import simulator.control.Controller;
+import simulator.factories.Builder;
+import simulator.factories.BuilderBasedFactory;
 import simulator.factories.Factory;
+import simulator.factories.MostCrowdedStrategyBuilder;
+import simulator.factories.MoveAllStrategyBuilder;
+import simulator.factories.MoveFirstStrategyBuilder;
+import simulator.factories.NewCityRoadEventBuilder;
+import simulator.factories.NewInterCityRoadEventBuilder;
+import simulator.factories.NewJunctionEventBuilder;
+import simulator.factories.NewVehicleEventBuilder;
+import simulator.factories.RoundRobinStrategyBuilder;
+import simulator.factories.SetContClassEventBuilder;
+import simulator.factories.SetWeatherEventBuilder;
+import simulator.model.DequeuingStrategy;
 import simulator.model.Event;
+import simulator.model.LightSwitchingStrategy;
+import simulator.model.TrafficSimulator;
 
 public class Main {
 
@@ -18,6 +40,7 @@ public class Main {
 	private static String _inFile = null;
 	private static String _outFile = null;
 	private static Factory<Event> _eventsFactory = null;
+	private static int _timeLimit = 0;
 
 	private static void parseArgs(String[] args) {
 
@@ -33,6 +56,7 @@ public class Main {
 			parseHelpOption(line, cmdLineOptions);
 			parseInFileOption(line);
 			parseOutFileOption(line);
+			parseTimeLimit(line);
 
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
@@ -81,15 +105,49 @@ public class Main {
 	private static void parseOutFileOption(CommandLine line) throws ParseException {
 		_outFile = line.getOptionValue("o");
 	}
+	
+	private static void parseTimeLimit(CommandLine line){
+		if(line.getOptionValue("t") == null) {
+			_timeLimit = _timeLimitDefaultValue;
+		}else {
+			_timeLimit = Integer.valueOf(line.getOptionValue("t"));
+		}
+	}
 
 	private static void initFactories() {
 
-		// TODO complete this method to initialize _eventsFactory
 
+		List<Builder<LightSwitchingStrategy>> lsbs = new ArrayList<>();
+		lsbs.add( new RoundRobinStrategyBuilder() );
+		lsbs.add( new MostCrowdedStrategyBuilder() );
+		Factory<LightSwitchingStrategy> lssFactory = new BuilderBasedFactory
+		<>(lsbs);
+		
+		List<Builder<DequeuingStrategy>> dqbs = new ArrayList<>();
+		dqbs.add( new MoveFirstStrategyBuilder() );
+		dqbs.add( new MoveAllStrategyBuilder() );
+		Factory<DequeuingStrategy> dqsFactory = new BuilderBasedFactory<>(
+		dqbs);
+		
+		List<Builder<Event>> ebs = new ArrayList<>();
+		ebs.add( new NewJunctionEventBuilder(lssFactory,dqsFactory) );
+		ebs.add( new NewCityRoadEventBuilder() );
+		ebs.add( new NewInterCityRoadEventBuilder() );
+		ebs.add( new SetWeatherEventBuilder());
+		ebs.add( new SetContClassEventBuilder());
+		ebs.add( new NewVehicleEventBuilder());
+		_eventsFactory = new BuilderBasedFactory<>(ebs);
+		
+		
+		
 	}
 
 	private static void startBatchMode() throws IOException {
-		// TODO complete this method to start the simulation
+		
+		Controller controller = new Controller(new TrafficSimulator(),_eventsFactory);
+		
+		controller.loadEvents(new FileInputStream(_inFile));
+		controller.run(_timeLimit, new FileOutputStream(_outFile));
 	}
 
 	private static void start(String[] args) throws IOException {

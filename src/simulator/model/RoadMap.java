@@ -28,12 +28,10 @@ public class RoadMap {
 	}
 	
 	protected void addJunction(Junction j) {
-		
 		if(!junctionMap.containsKey(j._id)) {
 			junctions.add(j);
 			junctionMap.put(j._id, j);
 		}
-		
 	}
 	
 	protected void addRoad(Road r) {
@@ -41,7 +39,7 @@ public class RoadMap {
 			roads.add(r);
 			roadMap.put(r._id, r);
 		}else {
-			//Excepcion
+			throw new IllegalArgumentException("No se ha podido añadir la carretera");
 		}
 			
 	}
@@ -52,16 +50,17 @@ public class RoadMap {
 		
 		boolean itineraryOk = true;
 		
-		for(int i = 0; i < v.readItinerary.size(); i++) {
-			if(v.readItinerary.get(i).roadTo(v.readItinerary.get(i + 1)).equals(null)) {
-				itineraryOk = false;
-			}
+		for(int i = 0; i < v.readItinerary.size() - 1; i++) {
+			//System.out.println(v.readItinerary.get(i) + " " + v.readItinerary.get(i + 1));
+			Road road = v.readItinerary.get(i).roadTo(v.readItinerary.get(i + 1));
+			itineraryOk = road != null;
 		}
 		
-		if(!vehicleMap.containsKey(v._id) || itineraryOk) {
+		if(!vehicleMap.containsKey(v._id) && itineraryOk) {
 			vehicles.add(v);
+			vehicleMap.put(v._id, v);
 		}else {
-			//Excepcion
+			throw new IllegalArgumentException("No se ha podido añadir el vehiculo");
 		}
 		
 	}

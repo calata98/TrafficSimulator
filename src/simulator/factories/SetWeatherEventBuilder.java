@@ -1,7 +1,9 @@
 package simulator.factories;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import simulator.misc.Pair;
@@ -11,8 +13,8 @@ import simulator.model.Weather;
 
 public class SetWeatherEventBuilder extends Builder<Event> {
 
-	SetWeatherEventBuilder(String type) {
-		super(type);
+	public SetWeatherEventBuilder() {
+		super("set_weather");
 		// TODO Auto-generated constructor stub
 	}
 
@@ -21,7 +23,15 @@ public class SetWeatherEventBuilder extends Builder<Event> {
 		Event aux;
 		
 		if(data.has("time") && data.has("info")) {
-			aux = new SetWeatherEvent(data.getInt("time"), (List<Pair<String,Weather>>) data.get("info"));
+			
+			List<Pair<String,Weather>> lista = new ArrayList<>();     
+			JSONArray arrayP = (JSONArray) data.get("info"); 
+			
+			for (int i=0;i<arrayP.length();i++){ 
+				lista.add(new Pair<String,Weather>(arrayP.getJSONObject(i).getString("road"), Weather.valueOf((String)arrayP.getJSONObject(i).get("weather"))));
+			} 
+			
+			aux = new SetWeatherEvent(data.getInt("time"), lista);
 		}else {
 			aux = null;
 		}

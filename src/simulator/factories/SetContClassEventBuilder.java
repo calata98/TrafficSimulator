@@ -1,7 +1,9 @@
 package simulator.factories;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import simulator.misc.Pair;
@@ -10,9 +12,8 @@ import simulator.model.NewSetContClassEvent;
 
 public class SetContClassEventBuilder extends Builder<Event> {
 
-	SetContClassEventBuilder(String type) {
-		super(type);
-		// TODO Auto-generated constructor stub
+	public SetContClassEventBuilder() {
+		super("set_cont_class");
 	}
 
 	@Override
@@ -20,12 +21,17 @@ public class SetContClassEventBuilder extends Builder<Event> {
 		Event aux;
 		
 		if(data.has("time") && data.has("info")) {
-			aux = new NewSetContClassEvent(data.getInt("time"), (List<Pair<String,Integer>>) data.get("info"));
+			
+			List lista = new ArrayList<>();
+			
+			JSONArray info = (JSONArray) data.get("info");
+			for(int i = 0; i < info.length() - 1; i++) {
+				lista.add(new Pair(info.getJSONObject(i).get("vehicle"), info.getJSONObject(i).get("class")));
+			}
+			aux = new NewSetContClassEvent(data.getInt("time"), lista);
 		}else {
 			aux = null;
 		}	
-		
-		
 		return aux;
 	}
 

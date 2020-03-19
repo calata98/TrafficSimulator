@@ -11,7 +11,7 @@ public class NewSetContClassEvent extends Event {
 		if(!cs.equals(null)) {
 			this.cs = cs;
 		}else {
-			//Excepcion
+			throw new IllegalArgumentException("cs no puede ser null");
 		}
 	}
 
@@ -22,10 +22,9 @@ public class NewSetContClassEvent extends Event {
 			if(!map.getVehicle(cs.get(i).getFirst()).equals(null)) {
 				map.getVehicle(cs.get(i).getFirst()).setContaminationClass(cs.get(i).getSecond());
 			}else {
-				//Excepcion
+				throw new IllegalArgumentException("El vehiculo no existe en el mapa de carreteras");
 			}
 		}
-
 	}
 
 }

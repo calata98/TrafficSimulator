@@ -1,5 +1,7 @@
 package simulator.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -28,26 +30,30 @@ public class Junction extends SimulatedObject {
 		if(dqStrategy != null) {
 			this.dqStrategy = dqStrategy;
 		}else {
-			//Excepcion
+			throw new IllegalArgumentException("DequeuingStrategy no puede ser null");
 		}
 		if(lsStrategy != null) {
 			this.lsStrategy = lsStrategy;
 		}else {
-			//Excepcion
+			throw new IllegalArgumentException("LightSwitchingStrategy no puede ser null");
 		}
 		
 		if(xCoor >= 0) {
 			this.xCoor = xCoor;
 		}else {
-			//Excepcion
+			throw new IllegalArgumentException("La coordenada x debe ser positiva");
 		}
 		if(yCoor >= 0) {
 			this.yCoor = yCoor;
 		}else {
-			//Excepcion
+			throw new IllegalArgumentException("La coordenada y debe ser positiva");
 		}
 		
 		this._id = id;
+		
+		exitRoads = new HashMap<Junction,Road>();
+		enterRoads = new LinkedList<Road>();
+		queueList = new ArrayList<>();
 		
 	}
 
@@ -59,17 +65,19 @@ public class Junction extends SimulatedObject {
 			List<Vehicle> cola = r.vehicles; //No sé si se hace así
 			queueList.add(cola);
 		}else {
-			//Excepcion
+			throw new IllegalArgumentException("La carretera r debe ser entrante");
 		}
 		
 	}
 	
 	void addOutGoingRoad(Road r) {
 		
-		if(r.srcJunc.equals(this) && exitRoads.containsKey(r.destJunc)) {
+		//System.out.println(r._id + " " + r.srcJunc + " " + r.destJunc);
+		
+		if(r.srcJunc.equals(this) && !exitRoads.containsKey(r.destJunc)) {
 			exitRoads.put(r.destJunc, r);
 		}else {
-			//Excepcion
+			throw new IllegalArgumentException("La carretera r debe ser saliente");
 		}
 		
 	}
@@ -81,6 +89,10 @@ public class Junction extends SimulatedObject {
 	
 	Road roadTo(Junction j) {
 		
+		//System.out.println(exitRoads.get("j2") +  " " + exitRoads.size());
+		
+		//System.out.println(this._id + "??: " + j._id + " " +  exitRoads.size() + " " + exitRoads.get(j));
+		
 		if(exitRoads.containsKey(j)) {
 			return exitRoads.get(j);
 		}else {
@@ -91,20 +103,23 @@ public class Junction extends SimulatedObject {
 	
 	@Override
 	void advance(int time) {
-		List<Vehicle> exitVehicles = dqStrategy.dequeue(enterRoads.get(currGreen).vehicles);
-		
-		for(int i = 0; i < exitVehicles.size(); i++) {
-			exitVehicles.get(i).advance(time);
-			exitVehicles.get(i).moveToNextRoad();
-			enterRoads.get(currGreen).exit(exitVehicles.get(i));
+		if(enterRoads.size() > 0) {
+			System.out.println(_id + " " + enterRoads.get(currGreen));
+			List<Vehicle> exitVehicles = dqStrategy.dequeue(enterRoads.get(currGreen).vehicles);
+			
+			
+			for(int i = 0; i < exitVehicles.size(); i++) {
+				exitVehicles.get(i).advance(time);
+				exitVehicles.get(i).moveToNextRoad();
+				enterRoads.get(currGreen).exit(exitVehicles.get(i));
+			}
+			
+			int nextGreen = lsStrategy.chooseNextGreen(enterRoads, queueList, currGreen, lastSwitchingTime, time);
+			
+			if(nextGreen != currGreen) {
+				currGreen = nextGreen;
+			}
 		}
-		
-		int nextGreen = lsStrategy.chooseNextGreen(enterRoads, queueList, currGreen, lastSwitchingTime, time);
-		
-		if(nextGreen != currGreen) {
-			currGreen = nextGreen;
-		}
-		
 	}
 
 	@Override

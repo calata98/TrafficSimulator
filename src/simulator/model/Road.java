@@ -1,5 +1,6 @@
 package simulator.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -23,51 +24,55 @@ public abstract class Road extends SimulatedObject {
 			int contLimit, int length, Weather weather) {
 			super(id);
 			
+			vehicles = new ArrayList<Vehicle>();
+			
 			if(maxSpeed <= 0) {
-				//Excepcion
+				throw new IllegalArgumentException("La velocidad maxima debe ser mayor a 0");
 			}else {
 				this.maxSpeed = maxSpeed;
 				speedLimit = maxSpeed;
 			}
 			
 			if(contLimit < 0) {
-				//Excepcion
+				throw new IllegalArgumentException("El limite de velocidad debe ser mayor a 0");
 			}else {
 				this.contLimit = contLimit;
 			}
 			
 			if(length <= 0) {
-				//Excepcion
+				throw new IllegalArgumentException("La longitud de la carretera debe ser mayor a 0");
 			}else {
 				this.length = length;
 			}
 			
 			if(weather == null) {
-				//Excepcion
+				throw new IllegalArgumentException("El tiempo no puede ser null");
 			}else {
 				this.weather = weather;
 			}
 			
+			if(destJunc == null) {
+				throw new IllegalArgumentException("Cruce destino no puede ser null");
+			}else {
+				this.destJunc = destJunc;
+				this.destJunc.addIncommingRoad(this);
+			}
+			
 			if(srcJunc == null) {
-				//Excepcion
+				throw new IllegalArgumentException("Cruce origen no pueder ser null");
 			}else {
 				this.srcJunc = srcJunc;
 				this.srcJunc.addOutGoingRoad(this);
 			}
 			
-			if(destJunc == null) {
-				//Excepcion
-			}else {
-				this.destJunc = destJunc;
-				this.destJunc.addIncommingRoad(this);
-			}
+			
 			
 	}
 	
 	void enter(Vehicle v) {
 		
 		if(v.location != 0 || v.speed != 0) {
-			//Excepcion
+			throw new IllegalArgumentException("No se ha podido añadir el vehiculo");
 		}else {
 			vehicles.add(v);
 		}
@@ -79,7 +84,7 @@ public abstract class Road extends SimulatedObject {
 	
 	void setWeather(Weather w) {
 		if(w == null) {
-			//Excepcion
+			throw new IllegalArgumentException("El tiempo w no puede ser null");
 		}else {
 			weather = w;
 		}
@@ -87,7 +92,7 @@ public abstract class Road extends SimulatedObject {
 	
 	void addContamination(int c) {
 		if(c < 0) {
-			//Excepcion
+			throw new IllegalArgumentException("La contaminacion c debe ser mayor a 0");
 		}else {
 			contTotal += c;
 		}

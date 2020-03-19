@@ -25,26 +25,28 @@ public class Vehicle extends SimulatedObject {
 			super(id);
 			
 			if(maxSpeed <= 0) {
-				//Excepcion
+				throw new IllegalArgumentException("La velocidad maxima debe ser mayor a 0");
 			}else {
 				this.maxSpeed = maxSpeed;
 			}
 			
 			if(contClass < 0 || contClass > 10) {
-				//Excepcion
+				throw new IllegalArgumentException("El grado de contaminacion debe estar entre 0 y 10");
 			}else {
 				this.contClass = contClass;
 			}
 			if(itinerary.size() < 2) {
-				//Excepcion
+				throw new IllegalArgumentException("La longitud de la lista del itinerario debe ser al menos 2");
 			}else {
 				readItinerary = Collections.unmodifiableList(new ArrayList<>(itinerary));
 			}
+			
+			estado = VehicleStatus.PENDING;
 	}
 	
 	void setSpeed(int s) {
 		if(s < 0) {
-			//Excepcion
+			throw new IllegalArgumentException("La velocidad s debe ser positiva");
 		}else {
 			if(s <= maxSpeed) {
 				speed = s;
@@ -56,7 +58,7 @@ public class Vehicle extends SimulatedObject {
 	
 	void setContaminationClass(int c) {
 		if(c < 0 || c > 10) {
-			//Excepcion
+			throw new IllegalArgumentException("El grado de contaminacion c debe estar entre 0 y 10");
 		}else {
 			contClass = c;
 		}
@@ -91,17 +93,19 @@ public class Vehicle extends SimulatedObject {
 	void moveToNextRoad() {
 		
 		if(!estado.equals(VehicleStatus.WAITING) && !estado.equals(VehicleStatus.PENDING)) {
-			//Excepcion
+			throw new IllegalArgumentException("El estado del vehiculo debe ser PENDING o WAITING");
 		}else {
 			if(estado.equals(VehicleStatus.PENDING)) {
-				road = readItinerary.get(0).roadTo(readItinerary.get(1));
+				road = readItinerary.get(0).exitRoads.get(readItinerary.get(1));
+				readItinerary.get(0).enter(this);
 				estado = VehicleStatus.WAITING;
 			}else {
 				road.exit(this);
-				if(readItinerary.indexOf(road.destJunc) >= readItinerary.size()){
+				if(readItinerary.indexOf(road.destJunc) >= readItinerary.size() - 1){
 					estado = VehicleStatus.ARRIVED;
 				}else {
 					road = readItinerary.get(readItinerary.indexOf(road.destJunc)).roadTo(readItinerary.get(readItinerary.indexOf(road.destJunc) + 1));
+					readItinerary.get(readItinerary.indexOf(road.destJunc)).enter(this);
 					estado = VehicleStatus.WAITING;
 				}
 			}

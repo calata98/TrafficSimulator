@@ -13,23 +13,21 @@ public class SetWeatherEvent extends Event {
 		if(!ws.equals(null)) {
 			this.ws = ws;
 		}else {
-			//Excepcion
+			throw new IllegalArgumentException("ws no ser null");
 		}
 		
 	}
 	
 	@Override
 	void execute(RoadMap map) {
-
 		for(int i = 0; i < ws.size(); i++) {
 			if(!map.getRoad(ws.get(i).getFirst()).equals(null)) {
 				map.getRoad(ws.get(i).getFirst()).setWeather(ws.get(i).getSecond());
 			}else {
-				//Excepcion
+				throw new IllegalArgumentException("La carretera no existe en el mapa de carreteras");
 			}
 			
 		}
-
 	}
 
 }

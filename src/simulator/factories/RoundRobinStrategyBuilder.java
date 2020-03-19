@@ -5,12 +5,12 @@ import simulator.model.LightSwitchingStrategy;
 import simulator.model.RoundRobinStrategy;
 
 
-public abstract class RoundRobinStrategyBuilder extends Builder<LightSwitchingStrategy> implements LightSwitchingStrategy{
+public class RoundRobinStrategyBuilder extends Builder<LightSwitchingStrategy>{
 	
 	private final int defaultTimeslot = 1;
 
-	RoundRobinStrategyBuilder(String type) {
-		super(type);
+	public RoundRobinStrategyBuilder() {
+		super("round_robin_lss");
 	}
 
 	@Override

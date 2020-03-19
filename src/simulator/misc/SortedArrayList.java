@@ -40,7 +40,6 @@ public class SortedArrayList<E> extends ArrayList<E> {
 		}
 
 		super.add(j + 1, e);
-
 		return true;
 	}
 

@@ -7,9 +7,8 @@ import simulator.model.MoveAllStrategy;
 
 public class MoveAllStrategyBuilder extends Builder<DequeuingStrategy> {
 
-	MoveAllStrategyBuilder(String type) {
-		super(type);
-		// TODO Auto-generated constructor stub
+	public MoveAllStrategyBuilder() {
+		super("most_all_dqs");
 	}
 
 	@Override
