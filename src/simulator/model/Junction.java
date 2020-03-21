@@ -20,7 +20,6 @@ public class Junction extends SimulatedObject {
 	protected LightSwitchingStrategy lsStrategy;
 	protected DequeuingStrategy dqStrategy;
 	protected int xCoor, yCoor;
-	//protected Map<Road,List<Vehicle>> roadsQueue;
 	
 	
 	Junction(String id, LightSwitchingStrategy lsStrategy, DequeuingStrategy
@@ -55,7 +54,6 @@ public class Junction extends SimulatedObject {
 		enterRoads = new ArrayList<Road>();
 		queueList = new ArrayList<>();
 		currGreen = -1;
-		//roadsQueue = new HashMap<Road,List<Vehicle>>();
 	}
 
 	
@@ -97,14 +95,14 @@ public class Junction extends SimulatedObject {
 	
 	@Override
 	void advance(int time) {
-		if(enterRoads.size() > 0) {
-			if(currGreen != -1 && queueList.size() > 0) {
+		if(enterRoads.size() > 0) { 
+			if(currGreen != -1 && queueList.size() > 0) { //Si no hay un semaforo en verde y la lista de colas está vacia los coches no avanzan
 				List<Vehicle> exitVehicles = dqStrategy.dequeue(queueList.get(currGreen));
-				if(exitVehicles != null) {
+				if(exitVehicles != null) { //Si exitVehicles es null significa que no hay coches en la lista de colas que puedan salir del cruce
 					for(int i = 0; i < exitVehicles.size(); i++) {
 						exitVehicles.get(i).advance(time);
 						exitVehicles.get(i).moveToNextRoad();
-						queueList.get(currGreen).remove(exitVehicles.get(i));
+						queueList.get(currGreen).remove(exitVehicles.get(i)); //Se saca el coche de la lista de colas por haber salido del cruce
 					}
 				}
 			}
@@ -129,10 +127,9 @@ public class Junction extends SimulatedObject {
 		}
 		
 		JSONArray enterRoadsQueue = new JSONArray();
-		for(int i = 0; i < enterRoads.size(); i++) {
+		for(int i = 0; i < enterRoads.size(); i++) {  
 			JSONObject queue = new JSONObject();
 			JSONArray vehicles = new JSONArray();
-			//System.out.println(_id + " " + queueList.get(i).size());
 			for(int j = 0; j < queueList.get(i).size(); j++) {
 				vehicles.put(queueList.get(i).get(j));
 			}

@@ -78,7 +78,6 @@ public abstract class Road extends SimulatedObject {
 	}
 	
 	void exit(Vehicle v) {
-		System.out.println(v + " sale de " + this + " y llega a " + destJunc);
 		vehicles.remove(v);
 	}
 	
@@ -113,9 +112,6 @@ public abstract class Road extends SimulatedObject {
 			aux.setSpeed(calculateVehicleSpeed(aux));
 			aux.advance(time);
 		}
-		
-		//Ordenar por localizacion
-
 	}
 
 	@Override

@@ -27,8 +27,7 @@ public class CityRoad extends Road {
 
 	@Override
 	protected int calculateVehicleSpeed(Vehicle v) {
-		
-		return (int)Math.ceil((((11.0-v.contClass)/11.0)*currSpeedLimit));
+		return (int)Math.ceil((((11.0-v.contClass)/11.0)*currSpeedLimit)); //Redondeado hacia arriba
 	}
 
 	@Override

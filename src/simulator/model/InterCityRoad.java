@@ -45,7 +45,7 @@ public class InterCityRoad extends Road {
 	protected int calculateVehicleSpeed(Vehicle v) {
 		int speed;
 		if(weather.equals(Weather.STORM)) {
-			speed = (int) Math.ceil((currSpeedLimit*0.8));
+			speed = (int) Math.ceil((currSpeedLimit*0.8)); //Redondeado hacia arriba
 		}else {
 			speed = currSpeedLimit;
 		}

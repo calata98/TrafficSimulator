@@ -51,7 +51,6 @@ public class RoadMap {
 		boolean itineraryOk = true;
 		
 		for(int i = 0; i < v.readItinerary.size() - 1; i++) {
-			//System.out.println(v.readItinerary.get(i) + " " + v.readItinerary.get(i + 1));
 			Road road = v.readItinerary.get(i).roadTo(v.readItinerary.get(i + 1));
 			itineraryOk = road != null;
 		}

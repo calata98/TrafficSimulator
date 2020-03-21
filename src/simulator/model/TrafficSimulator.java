@@ -29,7 +29,7 @@ public class TrafficSimulator {
 	public void advance() {
 		
 		time++;
-		while(eventList.size() > 0 && eventList.get(0)._time == time) {
+		while(eventList.size() > 0 && eventList.get(0)._time == time) {  //Se comprueba que haya eventos por ejecutar y que se ejecuten en el tick correspondiente
 				eventList.get(0).execute(roadMap);
 				eventList.remove(0);
 		}

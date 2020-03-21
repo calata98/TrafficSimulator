@@ -79,7 +79,7 @@ public class Vehicle extends SimulatedObject {
 				location = road.length;
 				estado = VehicleStatus.WAITING;
 				speed = 0;
-				road.destJunc.enter(this);
+				road.destJunc.enter(this); //Al haber llegado al final de la carretera entra en su cruce destino
 			}
 			
 			distanciaR += (location - prevLocation);
@@ -96,20 +96,18 @@ public class Vehicle extends SimulatedObject {
 	
 	void moveToNextRoad() {
 		if(estado.equals(VehicleStatus.WAITING) || estado.equals(VehicleStatus.PENDING)) {
-			if(estado.equals(VehicleStatus.PENDING)) {
+			if(estado.equals(VehicleStatus.PENDING)) { //Si el estado es PENDING entra en la primera carretera que una sus dos primeros cruces del itinerario
 				road = readItinerary.get(0).exitRoads.get(readItinerary.get(1));
-				System.out.println(_id + " entra 1º en " + road + " desde " + readItinerary.get(0));
 				road.enter(this);
 				estado = VehicleStatus.TRAVELING;
-			}else {
+			}else { //Si el estado es WAITING se saca de su carretera
 				road.exit(this);
-				if(readItinerary.indexOf(road.destJunc) >= readItinerary.size() - 1){
+				if(readItinerary.indexOf(road.destJunc) >= readItinerary.size() - 1){ //Si ha terminado su itinerario se pone el estado en ARRIVED
 					estado = VehicleStatus.ARRIVED;
-				}else {
+				}else { //Al cambiar de carretera se le pone la localizacion en 0 y se le introduce en la nueva carretera y el estado se cambia a TRAVELING
 					road = readItinerary.get(readItinerary.indexOf(road.destJunc)).roadTo(readItinerary.get(readItinerary.indexOf(road.destJunc) + 1));
 					this.location = 0;
 					road.enter(this);
-					System.out.println(_id + " entra en " + road );
 					estado = VehicleStatus.TRAVELING;
 				}
 			}
