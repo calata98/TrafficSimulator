@@ -116,19 +116,19 @@ public class RoadMap {
 		
 		JSONArray junctionsReport = new JSONArray();
 		for(int i = 0; i < junctions.size(); i ++) {
-			junctionsReport.put(junctions.get(i));
+			junctionsReport.put(junctions.get(i).report());
 		}
 		aux.put("junctions", junctionsReport);
 		
 		JSONArray roadsReport = new JSONArray();
 		for(int i = 0; i < roads.size(); i++) {
-			roadsReport.put(roads.get(i));
+			roadsReport.put(roads.get(i).report());
 		}
 		aux.put("roads", roadsReport);
 		
 		JSONArray vehiclesReport = new JSONArray();
 		for(int i = 0; i < vehicles.size(); i++) {
-			vehiclesReport.put(vehicles.get(i));
+			vehiclesReport.put(vehicles.get(i).report());
 		}
 		aux.put("vehicles", vehiclesReport);
 		

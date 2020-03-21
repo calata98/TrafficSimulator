@@ -12,7 +12,7 @@ public abstract class Road extends SimulatedObject {
 	protected Junction srcJunc, destJunc;
 	protected int length;
 	protected int maxSpeed;
-	protected int speedLimit;
+	protected int currSpeedLimit;
 	protected int contLimit;
 	protected Weather weather;
 	protected int contTotal;
@@ -30,11 +30,11 @@ public abstract class Road extends SimulatedObject {
 				throw new IllegalArgumentException("La velocidad maxima debe ser mayor a 0");
 			}else {
 				this.maxSpeed = maxSpeed;
-				speedLimit = maxSpeed;
+				currSpeedLimit = maxSpeed;
 			}
 			
 			if(contLimit < 0) {
-				throw new IllegalArgumentException("El limite de velocidad debe ser mayor a 0");
+				throw new IllegalArgumentException("El limite de contaminacion debe ser mayor a 0");
 			}else {
 				this.contLimit = contLimit;
 			}
@@ -66,7 +66,6 @@ public abstract class Road extends SimulatedObject {
 			}
 			
 			
-			
 	}
 	
 	void enter(Vehicle v) {
@@ -79,6 +78,7 @@ public abstract class Road extends SimulatedObject {
 	}
 	
 	void exit(Vehicle v) {
+		System.out.println(v + " sale de " + this + " y llega a " + destJunc);
 		vehicles.remove(v);
 	}
 	
@@ -124,7 +124,7 @@ public abstract class Road extends SimulatedObject {
 		JSONObject aux = new JSONObject();
 		
 		aux.put("id", _id);
-		aux.put("speedlimit", speedLimit);
+		aux.put("speedlimit", currSpeedLimit);
 		aux.put("weather", weather);
 		aux.put("co2", contTotal);
 		JSONArray carIds = new JSONArray();

@@ -74,7 +74,7 @@ public class Controller {
 		
 		
 		PrintStream writer = new PrintStream(out);
-		writer.print(outputObject.toString());
+		writer.println(outputObject.toString());
 		
 		
 		

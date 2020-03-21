@@ -73,40 +73,44 @@ public class Vehicle extends SimulatedObject {
 
 			prevLocation = location;
 			
-			if((location + speed) <= road.length) {
+			if((location + speed) < road.length) {
 				location = location + speed;
 			}else {
 				location = road.length;
-			}
-			
-			contTotal = (location - prevLocation) * contClass;
-			
-			if(location == road.length) {
 				estado = VehicleStatus.WAITING;
 				speed = 0;
+				road.destJunc.enter(this);
 			}
+			
+			distanciaR += (location - prevLocation);
+			int cont = (location - prevLocation) * contClass;
+			
+			contTotal += cont;
+			road.addContamination(cont);
+		}else {
+			speed = 0;
 		}
 		
 
 	}
 	
 	void moveToNextRoad() {
-		
-		if(!estado.equals(VehicleStatus.WAITING) && !estado.equals(VehicleStatus.PENDING)) {
-			throw new IllegalArgumentException("El estado del vehiculo debe ser PENDING o WAITING");
-		}else {
+		if(estado.equals(VehicleStatus.WAITING) || estado.equals(VehicleStatus.PENDING)) {
 			if(estado.equals(VehicleStatus.PENDING)) {
 				road = readItinerary.get(0).exitRoads.get(readItinerary.get(1));
-				readItinerary.get(0).enter(this);
-				estado = VehicleStatus.WAITING;
+				System.out.println(_id + " entra 1º en " + road + " desde " + readItinerary.get(0));
+				road.enter(this);
+				estado = VehicleStatus.TRAVELING;
 			}else {
 				road.exit(this);
 				if(readItinerary.indexOf(road.destJunc) >= readItinerary.size() - 1){
 					estado = VehicleStatus.ARRIVED;
 				}else {
 					road = readItinerary.get(readItinerary.indexOf(road.destJunc)).roadTo(readItinerary.get(readItinerary.indexOf(road.destJunc) + 1));
-					readItinerary.get(readItinerary.indexOf(road.destJunc)).enter(this);
-					estado = VehicleStatus.WAITING;
+					this.location = 0;
+					road.enter(this);
+					System.out.println(_id + " entra en " + road );
+					estado = VehicleStatus.TRAVELING;
 				}
 			}
 			
@@ -126,8 +130,10 @@ public class Vehicle extends SimulatedObject {
 		aux.put("co2", contTotal);
 		aux.put("class", contClass);
 		aux.put("status", estado);
-		aux.put("road", road._id);
-		aux.put("location", location);
+		if(estado != VehicleStatus.ARRIVED) {
+			aux.put("road", road._id);
+			aux.put("location", location);
+		}
 		
 		return aux;
 	}

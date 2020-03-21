@@ -29,7 +29,6 @@ public class TrafficSimulator {
 	public void advance() {
 		
 		time++;
-		
 		while(eventList.size() > 0 && eventList.get(0)._time == time) {
 				eventList.get(0).execute(roadMap);
 				eventList.remove(0);

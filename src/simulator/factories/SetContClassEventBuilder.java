@@ -25,7 +25,7 @@ public class SetContClassEventBuilder extends Builder<Event> {
 			List lista = new ArrayList<>();
 			
 			JSONArray info = (JSONArray) data.get("info");
-			for(int i = 0; i < info.length() - 1; i++) {
+			for(int i = 0; i < info.length(); i++) {
 				lista.add(new Pair(info.getJSONObject(i).get("vehicle"), info.getJSONObject(i).get("class")));
 			}
 			aux = new NewSetContClassEvent(data.getInt("time"), lista);

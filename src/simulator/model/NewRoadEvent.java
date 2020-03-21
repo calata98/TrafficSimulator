@@ -13,7 +13,7 @@ public class NewRoadEvent extends Event {
 	
 
 	public NewRoadEvent(int time, String id, String srcJun, String
-			destJunc, int length, int co2Limit, int maxSpeed, Weather weather)
+			destJunc, int maxSpeed, int co2Limit, int length, Weather weather)
 			{
 			super(time);
 		this.id = id;

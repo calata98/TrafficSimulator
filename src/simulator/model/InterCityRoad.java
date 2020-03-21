@@ -26,17 +26,17 @@ public class InterCityRoad extends Road {
 		break;
 			
 		}
-		int aux = (int)((100.0 - x)/100.0) * contTotal;
+		int aux = (int) (((100.0 - x)/100.0) * contTotal);
 		contTotal = aux;
 	}
 
 	@Override
 	void updateSpeedLimit() {
 
-		if(maxSpeed > contLimit) {
-			speedLimit = (int)(maxSpeed*0.5);
+		if(contTotal > contLimit) {
+			currSpeedLimit = (int)(maxSpeed*0.5);
 		}else {
-			speedLimit = maxSpeed; //Preguntar si con "pone el límite de la velocidad a la velocidad" se refiere a maxSpeed
+			currSpeedLimit = maxSpeed; 
 		}
 
 	}
@@ -45,9 +45,9 @@ public class InterCityRoad extends Road {
 	protected int calculateVehicleSpeed(Vehicle v) {
 		int speed;
 		if(weather.equals(Weather.STORM)) {
-			speed = (int)(speedLimit*0.8);
+			speed = (int) Math.ceil((currSpeedLimit*0.8));
 		}else {
-			speed = speedLimit;
+			speed = currSpeedLimit;
 		}
 		
 		return speed;

@@ -42,7 +42,6 @@ public class MostCrowdedStrategy implements LightSwitchingStrategy{
 			salida = roadMaxQueue;
 		}
 		
-		
 		return salida;
 	}
 

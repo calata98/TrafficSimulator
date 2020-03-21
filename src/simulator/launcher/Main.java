@@ -83,6 +83,7 @@ public class Main {
 		cmdLineOptions.addOption(
 				Option.builder("o").longOpt("output").hasArg().desc("Output file, where reports are written.").build());
 		cmdLineOptions.addOption(Option.builder("h").longOpt("help").desc("Print this message").build());
+		cmdLineOptions.addOption(Option.builder("t").longOpt("time").hasArg().desc("Time limit").build());
 
 		return cmdLineOptions;
 	}
@@ -106,8 +107,8 @@ public class Main {
 		_outFile = line.getOptionValue("o");
 	}
 	
-	private static void parseTimeLimit(CommandLine line){
-		if(line.getOptionValue("t") == null) {
+	private static void parseTimeLimit(CommandLine line) throws ParseException{
+		if (!line.hasOption("t")) {
 			_timeLimit = _timeLimitDefaultValue;
 		}else {
 			_timeLimit = Integer.valueOf(line.getOptionValue("t"));
