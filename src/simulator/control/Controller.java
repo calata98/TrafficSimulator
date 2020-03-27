@@ -72,9 +72,13 @@ public class Controller {
 		
 		outputObject.put("states", estados);
 		
+		if(out == null) {
+			System.out.println(outputObject);
+		}else {
+			PrintStream writer = new PrintStream(out);
+			writer.println(outputObject.toString());
+		}
 		
-		PrintStream writer = new PrintStream(out);
-		writer.println(outputObject.toString());
 		
 		
 		

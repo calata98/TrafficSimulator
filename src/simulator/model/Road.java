@@ -1,12 +1,13 @@
 package simulator.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public abstract class Road extends SimulatedObject {
+public abstract class Road extends SimulatedObject{
 
 	
 	protected Junction srcJunc, destJunc;
@@ -68,6 +69,8 @@ public abstract class Road extends SimulatedObject {
 			
 	}
 	
+	
+	
 	void enter(Vehicle v) {
 		
 		if(v.location != 0 || v.speed != 0) {
@@ -112,6 +115,9 @@ public abstract class Road extends SimulatedObject {
 			aux.setSpeed(calculateVehicleSpeed(aux));
 			aux.advance(time);
 		}
+		
+		Collections.sort(vehicles);
+	
 	}
 
 	@Override
@@ -132,5 +138,7 @@ public abstract class Road extends SimulatedObject {
 		
 		return aux;
 	}
+	
+	
 
 }

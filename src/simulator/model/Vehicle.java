@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.json.JSONObject;
 
-public class Vehicle extends SimulatedObject {
+public class Vehicle extends SimulatedObject implements Comparable<Vehicle>{
 	
 	private List<Junction> itinerary;
 	private int maxSpeed;
@@ -134,6 +134,11 @@ public class Vehicle extends SimulatedObject {
 		}
 		
 		return aux;
+	}
+
+	@Override
+	public int compareTo(Vehicle v) {
+		return this.location - v.location;
 	}
 
 }

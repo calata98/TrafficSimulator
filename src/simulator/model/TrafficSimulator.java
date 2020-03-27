@@ -1,7 +1,5 @@
 package simulator.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -18,7 +16,7 @@ public class TrafficSimulator {
 	public TrafficSimulator() {
 		eventList = new SortedArrayList<Event>();
 		time = 0;
-		roadMap = new RoadMap(new ArrayList<>(),new ArrayList<>(),new ArrayList<>(),new HashMap<>(),new HashMap<>(),new HashMap<>());
+		roadMap = new RoadMap();
 	}
 	
 	

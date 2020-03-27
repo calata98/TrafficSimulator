@@ -148,7 +148,13 @@ public class Main {
 		Controller controller = new Controller(new TrafficSimulator(),_eventsFactory);
 		
 		controller.loadEvents(new FileInputStream(_inFile));
-		controller.run(_timeLimit, new FileOutputStream(_outFile));
+		if(_outFile == null) {
+			controller.run(_timeLimit, null);
+		}else {
+			controller.run(_timeLimit, new FileOutputStream(_outFile));
+		}
+		
+		
 	}
 
 	private static void start(String[] args) throws IOException {

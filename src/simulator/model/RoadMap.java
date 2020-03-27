@@ -2,6 +2,7 @@ package simulator.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,14 +18,13 @@ public class RoadMap {
 	protected Map<String,Road> roadMap;
 	protected Map<String,Vehicle> vehicleMap;
 	
-	protected RoadMap(List<Junction> junctions, List<Road> roads, List<Vehicle> vehicles,
-			Map<String, Junction> junctionMap, Map<String, Road> roadMap, Map<String, Vehicle> vehicleMap) {
-		this.junctions = junctions;
-		this.roads = roads;
-		this.vehicles = vehicles;
-		this.junctionMap = junctionMap;
-		this.roadMap = roadMap;
-		this.vehicleMap = vehicleMap;
+	protected RoadMap() {
+		this.junctions = new ArrayList<>();
+		this.roads = new ArrayList<>();
+		this.vehicles = new ArrayList<>();
+		this.junctionMap = new HashMap<>();
+		this.roadMap = new HashMap<>();
+		this.vehicleMap = new HashMap<>();
 	}
 	
 	protected void addJunction(Junction j) {

@@ -9,7 +9,7 @@ public class MoveAllStrategy implements DequeuingStrategy{
 
 		List<Vehicle> lista;
 		
-		if(q.isEmpty()) {
+		if(!q.isEmpty()) {
 			q.remove(0);
 			lista = q;
 		}else {
